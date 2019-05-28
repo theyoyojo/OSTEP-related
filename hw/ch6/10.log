@@ -1,0 +1,132 @@
+open source     > level 1, order 1, name '/usr/share/texmf-dist/tex/context/base/mkiv/cont-yes.mkiv'
+system          > 
+system          > ConTeXt  ver: 2018.04.04 00:51 MKIV beta  fmt: 2019.5.2  int: english/english
+system          > 
+system          > 'cont-new.mkiv' loaded
+open source     > level 2, order 2, name '/usr/share/texmf-dist/tex/context/base/mkiv/cont-new.mkiv'
+close source    > level 2, order 2, name '/usr/share/texmf-dist/tex/context/base/mkiv/cont-new.mkiv'
+system          > files > jobname '10', input './10', result '10'
+fonts           > latin modern fonts are not preloaded
+languages       > language 'en' is active
+
+tex error       > tex error on line 8 in file /usr/share/texmf-dist/tex/context/base/mkiv/cont-yes.mkiv: ! I can't find file `./10'.
+
+l.8 }
+   
+\clf_processjob ...uafunction \16>>clf_processjob 
+                                                  
+l.97 \getvalue{clf_processjob}
+                             % from cont-run.lua
+
+ 1     %D \module
+ 2     %D   [       file=cont-yes,
+ 3     %D        version=2012.06.01,
+ 4     %D          title=\CONTEXT\ Miscellaneous Macros,
+ 5     %D       subtitle=Startup Stub,
+ 6     %D         author=Hans Hagen,
+ 7     %D           date=\currentdate,
+ 8 >>  %D      copyright={PRAGMA ADE \& \CONTEXT\ Development Team}]
+ 9     %C
+10     %C This module is part of the \CONTEXT\ macro||package and is
+11     %C therefore copyrighted by \PRAGMA. See mreadme.pdf for
+12     %C details.
+13     
+14     % At some point I will reconsider the \starttext .. \stoptext
+15     % wraping as we can assume proper styling. It's a left-over from
+16     % mkii that we need to get rid of.
+17     
+18     % now moved to cont-run.lua
+
+Please type another input file name: 
+
+tex error       > tex error on line 8 in file /usr/share/texmf-dist/tex/context/base/mkiv/cont-yes.mkiv: ! I can't find file `10'.
+
+l.8 }
+   
+\clf_processjob ...uafunction \16>>clf_processjob 
+                                                  
+l.97 \getvalue{clf_processjob}
+                             % from cont-run.lua
+
+ 1     %D \module
+ 2     %D   [       file=cont-yes,
+ 3     %D        version=2012.06.01,
+ 4     %D          title=\CONTEXT\ Miscellaneous Macros,
+ 5     %D       subtitle=Startup Stub,
+ 6     %D         author=Hans Hagen,
+ 7     %D           date=\currentdate,
+ 8 >>  %D      copyright={PRAGMA ADE \& \CONTEXT\ Development Team}]
+ 9     %C
+10     %C This module is part of the \CONTEXT\ macro||package and is
+11     %C therefore copyrighted by \PRAGMA. See mreadme.pdf for
+12     %C details.
+13     
+14     % At some point I will reconsider the \starttext .. \stoptext
+15     % wraping as we can assume proper styling. It's a left-over from
+16     % mkii that we need to get rid of.
+17     
+18     % now moved to cont-run.lua
+
+Please type another input file name: [A
+
+tex error       > tex error on line 8 in file /usr/share/texmf-dist/tex/context/base/mkiv/cont-yes.mkiv: ! I can't find file `[A'.
+
+l.8 }
+   
+\clf_processjob ...uafunction \16>>clf_processjob 
+                                                  
+l.97 \getvalue{clf_processjob}
+                             % from cont-run.lua
+
+ 1     %D \module
+ 2     %D   [       file=cont-yes,
+ 3     %D        version=2012.06.01,
+ 4     %D          title=\CONTEXT\ Miscellaneous Macros,
+ 5     %D       subtitle=Startup Stub,
+ 6     %D         author=Hans Hagen,
+ 7     %D           date=\currentdate,
+ 8 >>  %D      copyright={PRAGMA ADE \& \CONTEXT\ Development Team}]
+ 9     %C
+10     %C This module is part of the \CONTEXT\ macro||package and is
+11     %C therefore copyrighted by \PRAGMA. See mreadme.pdf for
+12     %C details.
+13     
+14     % At some point I will reconsider the \starttext .. \stoptext
+15     % wraping as we can assume proper styling. It's a left-over from
+16     % mkii that we need to get rid of.
+17     
+18     % now moved to cont-run.lua
+
+Please type another input file name: 
+
+tex error       > tex error on line 8 in file /usr/share/texmf-dist/tex/context/base/mkiv/cont-yes.mkiv: ! Emergency stop
+
+l.8 }
+   
+\clf_processjob ...uafunction \16>>clf_processjob 
+                                                  
+l.97 \getvalue{clf_processjob}
+                             % from cont-run.lua
+
+ 1     %D \module
+ 2     %D   [       file=cont-yes,
+ 3     %D        version=2012.06.01,
+ 4     %D          title=\CONTEXT\ Miscellaneous Macros,
+ 5     %D       subtitle=Startup Stub,
+ 6     %D         author=Hans Hagen,
+ 7     %D           date=\currentdate,
+ 8 >>  %D      copyright={PRAGMA ADE \& \CONTEXT\ Development Team}]
+ 9     %C
+10     %C This module is part of the \CONTEXT\ macro||package and is
+11     %C therefore copyrighted by \PRAGMA. See mreadme.pdf for
+12     %C details.
+13     
+14     % At some point I will reconsider the \starttext .. \stoptext
+15     % wraping as we can assume proper styling. It's a left-over from
+16     % mkii that we need to get rid of.
+17     
+18     % now moved to cont-run.lua
+
+End of file on the terminal!
+
+
