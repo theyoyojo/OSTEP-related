@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 #define REEE_LENGTH 	100
 #define ARBITRARY_BYTE 	0xaa
@@ -32,7 +33,7 @@ int main(int argc, char * argv[]) {
 		exit(2) ;
 	}
 	else {
-		printf("Alloc %zd megabytes OK.\n", megabytes) ;
+		printf("[pid: %d] alloc %zd megabytes OK.\n", getpid(), megabytes) ;
 	}
 
 	/* Just do a bunch of useless calculations */
