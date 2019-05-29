@@ -1,0 +1,3 @@
+[submodule "ostep-projects"]
+	path = ostep-projects
+	url = https://github.com/remzi-arpacidusseau/ostep-projects
