@@ -8,10 +8,28 @@ void error(void) ;
 int main(int argc, char * argv[]) {
 	/* setup */
 
-	struct wish_context * context = wish_context_new() ;
+	enum wish_mode mode ;
+
+	if (argc > 1) {
+		mode = WISH_MODE_BATCH ;
+	}
+	else {
+		mode = WISH_MODE_INTERACTIVE ;
+	}
+
+	struct wish_context * context = wish_context_new(mode) ;
 
 	while (wish_context_is_active(context)) {
-		
+		if (!wish_context_get_input(context)) {
+			error() ;
+			continue ;
+		}
+
+		if (!wish_context_parse_input(context)) {
+			error() ;
+		}
+
+		wish_input_print_stdout(context->input) ;
 	}
 
 	return 0 ;
