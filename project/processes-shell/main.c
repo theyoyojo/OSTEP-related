@@ -27,7 +27,7 @@ int main(int argc, char * argv[]) {
 
 	while (wish_context_is_active(context)) {
 		if (!wish_context_get_input(context)) {
-			error() ;
+			wish_builtin_exec(context, WISH_BUILTIN_EXIT) ;
 			continue ;
 		}
 

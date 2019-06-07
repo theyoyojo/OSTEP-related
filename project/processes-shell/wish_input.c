@@ -14,9 +14,11 @@ size_t truncate_trailing_whitespace(char * string) {
 
 	string_length = strlen(string) ;
 
+	characters_removed = 0 ;
 	for (counter = string_length - 1; counter > 0; --counter) {
 		if (isspace(string[counter])) {
 			string[counter] = '\0' ;
+			++characters_removed ;
 		}
 		else {
 			break ;
@@ -26,7 +28,7 @@ size_t truncate_trailing_whitespace(char * string) {
 	return characters_removed ;
 }
 
-/* private tokenization function */
+/* private tokenization function but it is very much a hack */
 static bool tokenize_input(struct wish_input * dest) {
 	char * tok, ** temp ;
 	bool success_code = true ;
@@ -42,9 +44,9 @@ static bool tokenize_input(struct wish_input * dest) {
 	tok = NULL ;
 	temp = NULL ;
 
-	tok = strtok(dest->line, " ") ;
+	tok = strtok(dest->line, " \t\n") ;
 	dest->size = 0 ;
-	do {
+	if (tok) do {
 		if (dest->size + 1 > dest->capacity) {
 			temp = (char **)realloc(dest->tokens, sizeof (char *) * (dest->capacity *= 2 + 1) ) ;
 			if (!temp) {
@@ -60,11 +62,12 @@ static bool tokenize_input(struct wish_input * dest) {
 			dest->tokens[dest->size++] = strdup(tok) ;
 		}
 
-	} while ((tok = strtok(NULL, " "))) ;
+	} while ((tok = strtok(NULL, " \t\n"))) ;
 
-	/* remove any whitespace at end of last token */
-	//dest->tokens[dest->size - 1][strlen(dest->tokens[dest->size - 1]) - 1] = '\0' ;
-	truncate_trailing_whitespace(dest->tokens[dest->size - 1]) ;
+	/* if one or more tokens exist, remove any whitespace at end of last token */
+	if (dest->size > 0) {
+		truncate_trailing_whitespace(dest->tokens[dest->size - 1]) ;
+	}
 	
 
 	/* to use this as argv, the last element in the array must be NULL */
@@ -97,6 +100,9 @@ struct wish_input * wish_input_new(int input_fd) {
 	/* case: no input */
 	if (!source_file || (new_line_size = getline(&new_line, (size_t *)&new_line_size, source_file)) < 0) {
 		pDEBUG("no input...") ;
+		if (new_line) {
+			free(new_line) ; new_line = NULL ;
+		}
 		new_input = NULL ;
 	}
 	/* case: input detected */
