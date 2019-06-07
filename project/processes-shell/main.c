@@ -1,3 +1,4 @@
+#undef DEBUG
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -27,12 +28,13 @@ int main(int argc, char * argv[]) {
 
 	while (wish_context_is_active(context)) {
 		if (!wish_context_get_input(context)) {
-			wish_builtin_exec(context, WISH_BUILTIN_EXIT) ;
+			context->mode = WISH_MODE_INACTIVE ;
 			continue ;
 		}
-
+#ifdef DEBUG
 		wish_input_print_stdout(context->input) ;
-		if (!wish_parse(context)) {
+#endif
+		if (wish_parse(context) < 0) {
 			pDEBUG("error parsing input") ;
 			error() ;
 		}

@@ -16,22 +16,51 @@ char * wish_builtin_enum_to_string(enum wish_builtin builtin_enum) {
 }
 
 static int builtin_cd(struct wish_context * context) {
-	pDEBUG("STUB") ;
-	return 0 ;
+	/* we require exactly one argument */
+	if (context->input->size != 2) {
+		return -WISH_CONTEXT_EPARM;
+	}
+
+	return chdir(context->input->tokens[1]) ;
 }
 static int builtin_exit(struct wish_context * context) {
+	/* we require exactly zero arguments */
+	if (context->input->size > 1) {
+		return -WISH_CONTEXT_EPARM;
+	}
 	
 	context->mode = WISH_MODE_INACTIVE ;
 	return 0 ;
 }
 static int builtin_path(struct wish_context * context) {
-	pDEBUG("STUB") ;
+	size_t counter ;
+
+	if (context->path_modified) {
+		for (counter = 0; counter < context->pathc; ++ counter) {
+			free(context->pathv[counter]) ;
+			free(context->pathv) ; context->pathv = NULL ;
+		}
+	}
+	
+	context->pathc = context->input->size - 1 ;
+	context->pathv = (char **)calloc(sizeof(char *),
+		/* pathv will contain a single null pointer when empty */
+		context->input->size == 1 ? 1 : context->pathc ) ;
+	if (!context->pathv) {
+		return -WISH_CONTEXT_EMEM ;
+	}
+	/* and we don't want to every actually iterate through it */
+	for (counter = 0; counter < context->pathc; ++counter) {
+		context->pathv[counter] = strdup(context->input->tokens[counter + 1]) ;
+	}
+	context->path_modified = true ;
+
 	return 0 ;
 }
 
 static int builtin_invalid(struct wish_context * context) {
-	pDEBUG("STUB but this is invalid") ;
-	return 0 ;
+	(void)context ;
+	return -WISH_CONTEXT_EBUG ;
 }
 
 enum wish_builtin wish_builtin_string_to_enum(char * builtin_string) {

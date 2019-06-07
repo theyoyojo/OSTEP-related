@@ -4,8 +4,6 @@
 #include <stdbool.h>
 #include <stdio.h>
 
-#define DEBUG
-
 #ifdef DEBUG
 #define pDEBUG(msg) fprintf(stderr, "%s:%d %s(): " msg "\n", __FILE__, __LINE__,  __func__)
 #else

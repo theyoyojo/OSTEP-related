@@ -6,8 +6,11 @@
 
 #include "wish_input.h"
 
-#define WISH_CONTEXT_ENULL 1
-#define WISH_CONTEXT_EINPUT 2
+#define WISH_CONTEXT_ENULL 	1 	/* we expect a valid pointer but got null */
+#define WISH_CONTEXT_EINPUT 	2	/* something about the input format is wonky */
+#define WISH_CONTEXT_EPARM 	3	/* bad parameters to command */
+#define WISH_CONTEXT_EBUG	4	/* some unknown bug has occured; this should not happen */
+#define WISH_CONTEXT_EMEM	5	/* the classic error of tried to alloc but failed */
 
 enum wish_mode {
 	WISH_MODE_INACTIVE = 0,
@@ -28,22 +31,29 @@ struct wish_context {
 	pid_t			pid ;
 	int			input_fd ;
 	int 			output_fd ;	
+	char **			pathv ;
+	size_t 			pathc ;
+	bool 			path_modified ;
 } ;
 
-#define WISH_CONTEXT_DEFAULT (struct wish_context) { \
-	.mode = 	WISH_MODE_INACTIVE, \
-	.input =	NULL, \
-	.pid =		getpid(), \
-	.input_fd =	STDIN_FILENO, \
-	.output_fd = 	STDOUT_FILENO, \
+#define WISH_CONTEXT_DEFAULT (struct wish_context) { 		\
+	.mode = 	WISH_MODE_INACTIVE, 			\
+	.input =	NULL, 					\
+	.pid =		getpid(), 				\
+	.input_fd =	STDIN_FILENO, 				\
+	.output_fd = 	STDOUT_FILENO, 				\
+	.pathv =	wish_context_get_default_path(), 	\
+	.pathc =	1,					\
+	.path_modified= false,					\
 }
 
 static inline int wish_context_is_active(struct wish_context * context) {
 	return (int)context->mode ;
 }
 
-// FIXME: params?
 struct wish_context * wish_context_new(enum wish_mode mode) ;
+
+char ** wish_context_get_default_path(void) ;
 
 void wish_context_delete(struct  wish_context ** context) ;
 

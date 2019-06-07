@@ -57,7 +57,7 @@ static bool tokenize_input(struct wish_input * dest) {
 			}
 			dest->tokens = temp ;
 		}
-		printf("got tok: %s (size: %zd)\n", tok, strlen(tok)) ;
+		/* printf("got tok: %s (size: %zd)\n", tok, strlen(tok)) ; */
 		if (!isspace(*tok)) {
 			dest->tokens[dest->size++] = strdup(tok) ;
 		}
@@ -203,6 +203,6 @@ void wish_input_delete(struct wish_input ** input) {
 		free(*input);*input = NULL ;
 	}
 	else {
-		fprintf(stderr, "wish_input_delete(): invalid object\n") ;
+		fprintf(stderr, "wish_input_delete(): invalid object, not freeing\n") ;
 	}
 }
