@@ -1,5 +1,7 @@
 #! /usr/bin/env bash 
 
+echo "hello there"
+
 # run_test testdir testnumber
 run_test () {
     local testdir=$1

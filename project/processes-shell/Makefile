@@ -4,7 +4,7 @@
 
 CC 	= gcc
 CFLAGS  = -g -std=gnu11
-OBJECTS = main.o wish_context.o wish_input.o
+OBJECTS = main.o wish_context.o wish_input.o wish_builtin.o wish_parse.o
 BIN	= wish
 
 all: $(OBJECTS)

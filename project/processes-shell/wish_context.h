@@ -6,6 +6,9 @@
 
 #include "wish_input.h"
 
+#define WISH_CONTEXT_ENULL 1
+#define WISH_CONTEXT_EINPUT 2
+
 enum wish_mode {
 	WISH_MODE_INACTIVE = 0,
 	WISH_MODE_BATCH,
@@ -47,5 +50,7 @@ void wish_context_delete(struct  wish_context ** context) ;
 bool wish_context_get_input(struct wish_context * context) ;
 
 bool wish_context_parse_input(struct wish_context * context) ;
+
+char * wish_context_get_token_at(struct wish_context * context, size_t index) ;
 
 #endif /* #ifndef WISH_CONTEXT_H */

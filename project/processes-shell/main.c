@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-#include "wish_context.h"
+#include "wish_parse.h"
 
 void error(void) ;
 
@@ -18,6 +19,11 @@ int main(int argc, char * argv[]) {
 	}
 
 	struct wish_context * context = wish_context_new(mode) ;
+	if (!context) {
+		pDEBUG("unable to alloc new context") ;
+		error() ;
+		exit(1) ;
+	}
 
 	while (wish_context_is_active(context)) {
 		if (!wish_context_get_input(context)) {
@@ -25,12 +31,14 @@ int main(int argc, char * argv[]) {
 			continue ;
 		}
 
-		if (!wish_context_parse_input(context)) {
+		wish_input_print_stdout(context->input) ;
+		if (!wish_parse(context)) {
+			pDEBUG("error parsing input") ;
 			error() ;
 		}
-
-		wish_input_print_stdout(context->input) ;
 	}
+
+	wish_context_delete(&context) ;
 
 	return 0 ;
 }

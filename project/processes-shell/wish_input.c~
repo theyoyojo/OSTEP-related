@@ -4,27 +4,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <ctype.h>
-
-/* that string better be null-terminated */
-/* returns number of characters removed */
-size_t truncate_trailing_whitespace(char * string) {
-	size_t 	characters_removed, string_length ;
-	int 	counter ;
-
-	string_length = strlen(string) ;
-
-	for (counter = string_length - 1; counter > 0; --counter) {
-		if (isspace(string[counter])) {
-			string[counter] = '\0' ;
-		}
-		else {
-			break ;
-		}
-	}
-
-	return characters_removed ;
-}
 
 /* private tokenization function */
 static bool tokenize_input(struct wish_input * dest) {
@@ -56,16 +35,16 @@ static bool tokenize_input(struct wish_input * dest) {
 			dest->tokens = temp ;
 		}
 		printf("got tok: %s (size: %zd)\n", tok, strlen(tok)) ;
-		if (!isspace(*tok)) {
+		if (*tok != '\n') {
 			dest->tokens[dest->size++] = strdup(tok) ;
 		}
 
+		if (strlen(tok) <= 1 && *tok == '\n') continue ;
+
 	} while ((tok = strtok(NULL, " "))) ;
 
-	/* remove any whitespace at end of last token */
-	//dest->tokens[dest->size - 1][strlen(dest->tokens[dest->size - 1]) - 1] = '\0' ;
-	truncate_trailing_whitespace(dest->tokens[dest->size - 1]) ;
-	
+	/* remove newline at end of last token */
+	dest->tokens[dest->size - 1][strlen(dest->tokens[dest->size - 1]) - 1] = '\0' ;
 
 	/* to use this as argv, the last element in the array must be NULL */
 	dest->tokens[dest->size] = NULL ;
@@ -149,8 +128,8 @@ bool wish_input_print_stdout(struct wish_input * input) {
 	write(STDOUT_FILENO, tok_open, strlen(tok_open)) ;
 	/* input->size + 1 to display the "null terminator" element in the argv input */
 	for (token_counter = 0; token_counter < input->size + 1; ++token_counter) {
-		input->tokens[token_counter] ? ({ /* case: token exists (last must be null) */
 		write(STDOUT_FILENO, "\"", 1) ;
+		input->tokens[token_counter] ? ({ /* case: token exists (last must be null) */
 		for (character_counter = 0; character_counter < strlen(input->tokens[token_counter]); ++character_counter) {
 			switch (current = input->tokens[token_counter][character_counter]) {
 				case '\n':
@@ -166,6 +145,9 @@ bool wish_input_print_stdout(struct wish_input * input) {
 					write(STDOUT_FILENO, &current, 1) ;
 			} /* switch on current character */
 		} /* for character in token */
+		}) : /* FALLBACK case: token does not exist */
+		write(STDERR_FILENO, tok_null, strlen(tok_null)) ;
+		/* end FALLBACK case */
 
 
 		write(STDOUT_FILENO, "\"", 1) ;
@@ -173,9 +155,6 @@ bool wish_input_print_stdout(struct wish_input * input) {
 		if (token_counter != input->size) {
 			write(STDOUT_FILENO, tok_delim, strlen(tok_delim)) ;
 		}
-		}) : /* FALLBACK case: token does not exist */
-		write(STDERR_FILENO, tok_null, strlen(tok_null)) ;
-		/* end FALLBACK case */
 
 	//	printf("(%zu) ", strlen(input->tokens[token_counter])) ;
 

@@ -4,15 +4,27 @@
 #include <stdbool.h>
 #include <stdio.h>
 
+#define DEBUG
+
+#ifdef DEBUG
+#define pDEBUG(msg) fprintf(stderr, "%s:%d %s(): " msg "\n", __FILE__, __LINE__,  __func__)
+#else
+#define pDEBUG(msg) (void)msg
+#endif /* #ifndef DEBUG */
+
+
 struct wish_input {
+	char 			* line ;
+	ssize_t 		line_size ;
 	char 			** tokens ;
 	size_t 			size ;
+	size_t 			capacity ;
 } ;
 
 #define WISH_INPUT_PROMPT "wish> "
 
 struct wish_input * wish_input_new(int input_fd) ;
-struct wish_input * wish_input_new_interactive(void) ;
+struct wish_input * wish_input_new_interactive(int input_fd) ;
 
 bool wish_input_print_stdout(struct wish_input * input) ;
 
