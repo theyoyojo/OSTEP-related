@@ -1,4 +1,4 @@
-#define DEBUG
+#undef DEBUG
 #include "wish_context.h"
 #include <stdlib.h>
 #include <sys/wait.h>
@@ -28,7 +28,7 @@ int wish_execv(char * path, char * const argv[]) {
 // nah?
 void wish_input_sanitize(void) ;
 
-struct wish_context * wish_context_new(enum wish_mode mode) {
+struct wish_context * wish_context_new(void) {
 	struct wish_context * new_context ;
 
 	new_context = NULL ;
@@ -40,7 +40,7 @@ struct wish_context * wish_context_new(enum wish_mode mode) {
 
 	*new_context = WISH_CONTEXT_DEFAULT ;
 
-	new_context->mode = mode ;
+	new_context->mode = WISH_MODE_INACTIVE ;
 
 	return new_context ;
 }

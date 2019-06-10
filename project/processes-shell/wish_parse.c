@@ -1,4 +1,5 @@
 #include "wish_parse.h"
+#include "wish_error.h"
 
 int wish_parse(struct wish_context * context) {
 	int ret ;
@@ -16,6 +17,9 @@ int wish_parse(struct wish_context * context) {
 	if (wish_builtin_available(context)) {
 		ret = wish_builtin_exec(context,
 			wish_builtin_string_to_enum(first_token)) ;
+		if (ret < 0) {
+			error() ;
+		}
 	}
 	/* case: try and find an executable in the specified paths */
 	else {

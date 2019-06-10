@@ -203,6 +203,6 @@ void wish_input_delete(struct wish_input ** input) {
 		free(*input);*input = NULL ;
 	}
 	else {
-		fprintf(stderr, "wish_input_delete(): invalid object, not freeing\n") ;
+		pDEBUG("invalid object, not freeing") ;
 	}
 }

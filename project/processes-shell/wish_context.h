@@ -51,7 +51,7 @@ static inline int wish_context_is_active(struct wish_context * context) {
 	return (int)context->mode ;
 }
 
-struct wish_context * wish_context_new(enum wish_mode mode) ;
+struct wish_context * wish_context_new(void) ;
 
 char ** wish_context_get_default_path(void) ;
 
