@@ -1,13 +1,15 @@
-#undef DEBUG
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <fcntl.h>
+#include <unistd.h>
 
 #include "wish_parse.h"
 #include "wish_error.h"
 
 int main(int argc, char * argv[]) {
-	FILE * script_file ;
+	int script_file_fd = -1 ;
+	int ret = 0 ;
 
 	struct wish_context * context = wish_context_new() ;
 	if (!context) {
@@ -17,21 +19,25 @@ int main(int argc, char * argv[]) {
 		goto the_end ;
 	}
 
-	script_file = NULL ;
+	script_file_fd = -1 ;
 	if (argc > 2) {
-	/* case: invalid usage */
+	/* case: invalid usage: clean up and gtfo */
 		pDEBUG("bad usage bro") ;
+		wish_context_delete(&context) ;
+		ret = 1 ;
 		error() ;
+		goto the_end ;
 	}
 	else
 	if (argc > 1) {
 	/* case: batch usage */
-		if ((script_file = fopen(argv[1], "r"))) {
+		if (!((script_file_fd = open(argv[1], 0)) < 0)) {
 			context->mode = WISH_MODE_BATCH ;
-			context->input_fd = fileno(script_file) ;
+			context->input_fd = script_file_fd ;
 		}
 		else {
 			pDEBUG("unable to open script file") ;
+			ret = 1 ;
 			error() ;
 		}
 	}
@@ -46,7 +52,7 @@ int main(int argc, char * argv[]) {
 			continue ;
 		}
 #ifdef DEBUG
-		wish_input_print_stdout(context->input) ;
+		wish_input_print_stdout(context->input[0]) ;
 #endif
 		if (wish_parse(context) < 0) {
 			pDEBUG("error parsing input") ;
@@ -55,10 +61,11 @@ int main(int argc, char * argv[]) {
 	}
 
 	wish_context_delete(&context) ;
-	if (script_file) {
-		fclose(script_file) ;
+	if (script_file_fd > 0) {
+		close(script_file_fd) ;
 	}
 
 the_end:
-	return 0 ;
+	pDEBUG("the_end") ;
+	return ret ;
 }

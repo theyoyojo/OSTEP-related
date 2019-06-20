@@ -13,9 +13,9 @@ enum wish_builtin {
 /* context-dependent */
 
 /* return zero for success, nonzero for error */
-int wish_builtin_exec(struct wish_context * context, enum wish_builtin builtin) ;
+int wish_builtin_exec(struct wish_context * context, size_t index, enum wish_builtin builtin) ;
 
-bool wish_builtin_available(struct wish_context * context) ;
+bool wish_builtin_available(struct wish_context * context, size_t index) ;
 
 /* context-independent */
 char * wish_builtin_enum_to_string(enum wish_builtin builtin) ;

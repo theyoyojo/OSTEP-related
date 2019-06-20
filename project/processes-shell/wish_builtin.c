@@ -15,24 +15,24 @@ char * wish_builtin_enum_to_string(enum wish_builtin builtin_enum) {
 	return wish_builtin_strings[(size_t)builtin_enum] ;
 }
 
-static int builtin_cd(struct wish_context * context) {
+static int builtin_cd(struct wish_context * context, size_t index) {
 	/* we require exactly one argument */
-	if (context->input->size != 2) {
+	if (context->input[index]->size != 2) {
 		return -WISH_CONTEXT_EPARM;
 	}
 
-	return chdir(context->input->tokens[1]) ;
+	return chdir(context->input[index]->tokens[1]) ;
 }
-static int builtin_exit(struct wish_context * context) {
+static int builtin_exit(struct wish_context * context, size_t index) {
 	/* we require exactly zero arguments */
-	if (context->input->size > 1) {
+	if (context->input[index]->size > 1) {
 		return -WISH_CONTEXT_EPARM;
 	}
 	
 	context->mode = WISH_MODE_INACTIVE ;
 	return 0 ;
 }
-static int builtin_path(struct wish_context * context) {
+static int builtin_path(struct wish_context * context, size_t index) {
 	size_t counter ;
 
 	if (context->path_modified) {
@@ -42,23 +42,23 @@ static int builtin_path(struct wish_context * context) {
 		}
 	}
 	
-	context->pathc = context->input->size - 1 ;
+	context->pathc = context->input[index]->size - 1 ;
 	context->pathv = (char **)calloc(sizeof(char *),
 		/* pathv will contain a single null pointer when empty */
-		context->input->size == 1 ? 1 : context->pathc ) ;
+		context->input[index]->size == 1 ? 1 : context->pathc ) ;
 	if (!context->pathv) {
 		return -WISH_CONTEXT_EMEM ;
 	}
 	/* and we don't want to every actually iterate through it */
 	for (counter = 0; counter < context->pathc; ++counter) {
-		context->pathv[counter] = strdup(context->input->tokens[counter + 1]) ;
+		context->pathv[counter] = strdup(context->input[index]->tokens[counter + 1]) ;
 	}
 	context->path_modified = true ;
 
 	return 0 ;
 }
 
-static int builtin_invalid(struct wish_context * context) {
+static int builtin_invalid(struct wish_context * context, size_t index) {
 	(void)context ;
 	return -WISH_CONTEXT_EBUG ;
 }
@@ -84,8 +84,8 @@ enum wish_builtin wish_builtin_string_to_enum(char * builtin_string) {
 	return ret ;
 }
 
-int wish_builtin_exec(struct wish_context * context, enum wish_builtin builtin) {
-	int (*builtin_function)(struct wish_context *) = builtin_invalid ;
+int wish_builtin_exec(struct wish_context * context, size_t index, enum wish_builtin builtin) {
+	int (*builtin_function)(struct wish_context *, size_t) = builtin_invalid ;
 
 	if (!context) {
 		pDEBUG("invalid context") ;
@@ -107,14 +107,19 @@ int wish_builtin_exec(struct wish_context * context, enum wish_builtin builtin) 
 			break ;
 	}
 
-	return builtin_function(context) ;
+	return builtin_function(context, index) ;
 }
 
-bool wish_builtin_available(struct wish_context * context) {
+bool wish_builtin_available(struct wish_context * context, size_t index) {
 	bool success_code = true ;
 
 	if (!context) {
 		pDEBUG("invalid context") ;
+		success_code = false ;
+	}
+	else
+	if (index >= context->size) {
+		pDEBUG("invalid index") ;
 		success_code = false ;
 	}
 	else
@@ -123,7 +128,7 @@ bool wish_builtin_available(struct wish_context * context) {
 		success_code = false ;
 	}
 	else
-	if (wish_builtin_string_to_enum(context->input->tokens[0]) == WISH_BUILTIN_INVALID) {
+	if (wish_builtin_string_to_enum(context->input[index]->tokens[0]) == WISH_BUILTIN_INVALID) {
 		pDEBUG("no builtin found (not an error)") ;
 		success_code = false ;
 	}
