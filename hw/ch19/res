@@ -1,0 +1,11 @@
+1 pages x 1000 reps:	  168 cycles on cpu 0
+2 pages x 1000 reps:	  145 cycles on cpu 0
+4 pages x 1000 reps:	  196 cycles on cpu 0
+8 pages x 1000 reps:	  435 cycles on cpu 0
+16 pages x 1000 reps:	  2792 cycles on cpu 0
+32 pages x 1000 reps:	  1802 cycles on cpu 0
+64 pages x 1000 reps:	  5169 cycles on cpu 0
+128 pages x 1000 reps:	  8680 cycles on cpu 0
+256 pages x 1000 reps:	  13183 cycles on cpu 0
+512 pages x 1000 reps:	  19666 cycles on cpu 0
+1024 pages x 1000 reps:	  41857 cycles on cpu 0
